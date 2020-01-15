@@ -1,0 +1,17 @@
+{
+  "name": "ecommerce-src",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client/*",
+    "server/*"
+  ],
+  "scripts": {
+    "build-server": "cd server && yarn build",
+    "dev-server": "cd server && yarn start:debug",
+    "gen-client": "cd client && yarn gen-types",
+    "dev-client": "cd client && yarn start"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

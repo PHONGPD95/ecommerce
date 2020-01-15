@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "~*": ["./*"],
+      "~base/*": ["modules/base/*"],
+      "~models/*": ["modules/models/*"],
+      "~graphql/*": ["modules/graphql/*"],
+      "~database/*": ["database/*"],
+      "~context/*": ["modules/context/*"],
+      "~utils/*": ["modules/utils/*"],
+      "~jobs/*": ["jobs/*"]
+    }
+  }
+}

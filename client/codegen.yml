@@ -1,0 +1,12 @@
+schema: http://localhost:8080/graphql
+documents: "src/graphql/**/*.ts"
+overwrite: true
+generates:
+  src/graphql/codegen-graphql.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+  src/graphql/codegen-schema.json:
+    plugins:
+      - introspection

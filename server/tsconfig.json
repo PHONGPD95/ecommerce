@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "rootDir": "./",
+    "outDir": "./dist",
+    "module": "commonjs",
+    "target": "es2017",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": false
+  },
+  "exclude": ["node_modules", "**/node_modules/*", "dist", "resources"]
+}
