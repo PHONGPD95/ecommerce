@@ -1,3 +1,4 @@
+import { FieldsByTypeName, ResolveTree } from 'graphql-parse-resolve-info';
 import { pickBy, some } from 'lodash';
 import {
   Arg,
@@ -19,6 +20,7 @@ import Container from 'typedi';
 
 import {
   Field,
+  FieldInfo,
   FILTER_METADATA_KEY,
   Mutation,
   Query,
@@ -62,6 +64,10 @@ function addRangeOperators(cls: ClassType, getType: TypeValueThunk) {
   Field(() => getType(), { nullable: true })(cls.prototype, 'lt');
   Field(() => getType(), { nullable: true })(cls.prototype, 'lte');
 }
+
+@InputType()
+class IDOperatorArgs {}
+addArrayOperators(IDOperatorArgs, () => ID);
 
 @InputType()
 class StringOperatorArgs {}
@@ -162,6 +168,13 @@ export function createBaseResolver<TModel extends BaseModel>(
         WhereFilterArgs.prototype,
         field.name,
       );
+      if (field.getType() === ID) {
+        hasOperator = true;
+        Field(() => IDOperatorArgs, { nullable: true })(
+          WhereFilterOperatorArgs.prototype,
+          field.name,
+        );
+      }
       if (field.getType() === String) {
         hasOperator = true;
         Field(() => StringOperatorArgs, { nullable: true })(
@@ -198,6 +211,32 @@ export function createBaseResolver<TModel extends BaseModel>(
       OPERATORS_FIELDNAME,
     );
   }
+
+  const processQueryFields = (
+    fieldsByTypeName: FieldsByTypeName,
+  ): { [field: string]: number } => {
+    const keys = Object.keys(fieldsByTypeName);
+    if (!keys.length) {
+      return null;
+    }
+    const queryFields = fieldsByTypeName[keys[0]];
+    return Object.keys(fieldsByTypeName[keys[0]]).reduce((all, field) => {
+      const { name, fieldsByTypeName: childFieldsByTypeName } = queryFields[
+        field
+      ];
+      const processedQueryChildFields =
+        processQueryFields(childFieldsByTypeName) || {};
+      const childKeys = Object.keys(processedQueryChildFields);
+      if (!childKeys.length) {
+        all[name] = 1;
+      } else {
+        childKeys.forEach(key => {
+          all[`${name}.${key}`] = 1;
+        });
+      }
+      return all;
+    }, {});
+  };
 
   @ArgsType()
   class FindOneFilterArgs {
@@ -272,10 +311,16 @@ export function createBaseResolver<TModel extends BaseModel>(
       name: `findOne${modelName}`,
       enable: read.enable,
     })
-    public async findOne(@Args() args: FindOneFilterArgs): Promise<TModel> {
+    public async findOne(
+      @Args() args: FindOneFilterArgs,
+      @FieldInfo() info: ResolveTree,
+    ): Promise<TModel> {
+      const pick = processQueryFields(info.fieldsByTypeName);
+
       const { where: filter, sort } = args;
+
       const where = processFilters(pickBy(filter, val => !!val));
-      return this.service.findOne({ where, ...(sort && { sort }) });
+      return this.service.findOne({ where, pick, ...(sort && { sort }) });
     }
 
     @Authorized(read.role)
@@ -283,12 +328,18 @@ export function createBaseResolver<TModel extends BaseModel>(
       name: `findMany${modelName}`,
       enable: read.enable,
     })
-    public async findMany(@Args() args: FindManyFilterArgs): Promise<TModel[]> {
+    public async findMany(
+      @Args() args: FindManyFilterArgs,
+      @FieldInfo() info: ResolveTree,
+    ): Promise<TModel[]> {
+      const pick = processQueryFields(info.fieldsByTypeName);
+
       const { skip, limit, sort, where: filter } = args;
 
       const where = processFilters(pickBy(filter, val => !!val));
       return this.service.findMany({
         where,
+        pick,
         ...(sort && { sort }),
         ...(skip && { skip }),
         ...(limit && { limit }),

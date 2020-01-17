@@ -1,8 +1,7 @@
-import { ObjectId } from 'mongodb';
-import { ClassType } from '~database/types';
-
 import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
+
+import { ClassType } from '~database/types';
 
 @Injectable()
 export class BaseService<TModel> {
@@ -17,13 +16,13 @@ export class BaseService<TModel> {
   }
 
   public async findOne(filter?: any): Promise<TModel> {
-    const { sort, where } = filter;
-    return this.model.findOne(where, null, { sort });
+    const { sort, where, pick } = filter;
+    return this.model.findOne(where, pick, { sort });
   }
 
   public async findMany(filter?: any): Promise<TModel[]> {
-    const { where, sort, skip, limit } = filter;
-    return this.model.find(where, null, {
+    const { where, sort, skip, limit, pick } = filter;
+    return this.model.find(where, pick, {
       skip,
       limit,
       sort,

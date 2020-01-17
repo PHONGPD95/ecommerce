@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb';
+
 import { IOrderArgs, IWhereArgs, IWhereArgsWithSearch } from '~modules/graphql/types';
 
 export const OPERATORS_FIELDNAME = '_operators';
@@ -70,27 +71,6 @@ function processFilterOperators(filter: IWhereArgs): IWhereArgs {
 
   return filter;
 }
-
-// function prepareFieldsFilter(filter: IWhereArgs): WhereArgs {
-//   filter = Object.keys(filter).reduce((all, item) => {
-//     if (!item.includes('$')) {
-//       all[item] = { $regex: filter[item], $options: 'i' };
-//     } else if (item === '$or') {
-//       all[item] = filter[item].map(f => prepareFieldsFilter(f));
-//     } else {
-//       all[item] = filter[item];
-//     }
-//     return all;
-//   }, {});
-
-//   return filter;
-// }
-
-// function processSearch(searchTerm: string, fields: string[]): IWhereArgs[] {
-//   return fields.map(field => ({
-//     [field]: { $regex: searchTerm, $options: 'i' },
-//   }));
-// }
 
 export function processFilters(filter: IWhereArgsWithSearch): IWhereArgs {
   const { _search, ...remainingFilter } = filter;
