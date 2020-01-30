@@ -9,11 +9,11 @@ import { index, modelOptions, prop } from '@typegoose/typegoose';
 @index({ description: 'text', display: 'text' })
 @modelOptions({ schemaOptions: { collection: 'Profile' } })
 export class Profile extends BaseModel {
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public profileId: string;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public display: string;
 

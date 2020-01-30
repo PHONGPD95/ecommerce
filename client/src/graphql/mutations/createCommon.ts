@@ -9,7 +9,6 @@ export const CREATE_COMMON = gql`
         ...Common
       }
       error {
-        title
         message
       }
     }

@@ -9,7 +9,6 @@ export const CHANGE_PASSWORD = gql`
         ...User
       }
       error {
-        title
         message
       }
     }

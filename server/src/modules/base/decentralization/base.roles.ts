@@ -132,4 +132,22 @@ allRoles.push({
   description: 'Xem Product',
 });
 
+export const PERMISSION_UPDATE_ORDER = 'order.update';
+allRoles.push({
+  roleId: PERMISSION_UPDATE_ORDER,
+  description: 'Cập nhật Order',
+});
+
+export const PERMISSION_REMOVE_ORDER = 'order.remove';
+allRoles.push({
+  roleId: PERMISSION_REMOVE_ORDER,
+  description: 'Xoá Order',
+});
+
+export const PERMISSION_READ_ORDER = 'order.read';
+allRoles.push({
+  roleId: PERMISSION_READ_ORDER,
+  description: 'Xem Order',
+});
+
 export const roles = allRoles;

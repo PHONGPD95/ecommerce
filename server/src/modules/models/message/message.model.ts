@@ -1,11 +1,10 @@
 import { ObjectId } from 'mongodb';
 import { ID, InputType, ObjectType } from 'type-graphql';
-
-import { index, modelOptions, plugin, prop } from '@typegoose/typegoose';
-
 import { creatorPlugin } from '~database/plug-in';
 import { Field } from '~graphql/graphql-decorators';
 import { BaseModel } from '~modules/base/base.model';
+
+import { index, modelOptions, plugin, prop } from '@typegoose/typegoose';
 
 @InputType('MessageInput')
 @ObjectType()
@@ -13,7 +12,7 @@ import { BaseModel } from '~modules/base/base.model';
 @index({ content: 'text' })
 @modelOptions({ schemaOptions: { collection: 'Message' } })
 export class Message extends BaseModel {
-  @Field({ filter: true, sort: true })
+  @Field()
   @prop({ required: true })
   public content: string;
 

@@ -9,7 +9,6 @@ export const UPDATE_INFO = gql`
         ...User
       }
       error {
-        title
         message
       }
     }

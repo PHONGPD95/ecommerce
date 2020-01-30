@@ -9,7 +9,6 @@ export const CREATE_MESSAGE = gql`
         ...Message
       }
       error {
-        title
         message
       }
     }

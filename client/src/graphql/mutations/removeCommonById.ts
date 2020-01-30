@@ -9,7 +9,6 @@ export const REMOVE_COMMON_BY_ID = gql`
         ...Common
       }
       error {
-        title
         message
       }
     }

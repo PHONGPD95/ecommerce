@@ -8,7 +8,6 @@ export const CREATE_FILE = gql`
         path
       }
       error {
-        title
         message
       }
     }

@@ -23,6 +23,11 @@ export class ShoppingCartStore {
   }
 
   @action
+  clearCart = () => {
+    this.cart = [];
+  };
+
+  @action
   addItem = (product: Product, amount: number = 1) => {
     const index = this.cart.findIndex(item => item._id === product._id);
 

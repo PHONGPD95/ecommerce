@@ -8,7 +8,6 @@ export const FIND_FILE_BY_ID = gql`
         path
       }
       error {
-        title
         message
       }
     }

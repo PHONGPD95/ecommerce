@@ -9,7 +9,6 @@ export const REMOVE_PRODUCT_BY_ID = gql`
         ...Product
       }
       error {
-        title
         message
       }
     }

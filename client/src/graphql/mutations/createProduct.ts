@@ -9,7 +9,6 @@ export const CREATE_PRODUCT = gql`
         ...Product
       }
       error {
-        title
         message
       }
     }

@@ -1,11 +1,15 @@
-import { Button, message, Row, Steps } from 'antd';
+import { Button, Result, Row, Steps } from 'antd';
+import { StepsProps } from 'antd/lib/steps';
 import { observer } from 'mobx-react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import ShoppingCartList from '~components/ShoppingCart/List';
 import { useStores } from '~stores';
 
+import Detail from './Detail';
 import Form from './Form';
+import store from './store';
 
 const StyledContent = styled.div`
   flex: 1;
@@ -28,7 +32,22 @@ const steps = [
   },
   {
     title: "Xác nhận đơn hàng",
-    content: "Last-content"
+    content: <Detail />
+  },
+  {
+    title: "Kết thúc",
+    content: (
+      <Result
+        status="success"
+        title="Tạo đơn hàng thành công!"
+        subTitle="Đơn hàng đang chờ xác nhận từ nhân viên."
+        extra={[
+          <Link key="shopping" to="/">
+            Tiếp tục mua hàng
+          </Link>
+        ]}
+      />
+    )
   }
 ];
 
@@ -36,8 +55,12 @@ const Order: FC = observer(() => {
   const {
     shoppingCartStore: { cart }
   } = useStores();
+  const { setCurrentStep, currentStep, status, handleSubmit } = store;
 
-  const [currentStep, setCurrentStep] = useState(0);
+  useEffect(() => {
+    setCurrentStep(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const next = () => {
     setCurrentStep(currentStep + 1);
@@ -56,31 +79,35 @@ const Order: FC = observer(() => {
         padding: 16
       }}
     >
-      <Steps current={currentStep}>
-        {steps.map(item => (
-          <Step key={item.title} title={item.title} />
+      <Steps current={currentStep} status={status as StepsProps["status"]}>
+        {steps.map((item, index) => (
+          <Step key={index} title={item.title} />
         ))}
       </Steps>
       <StyledContent>{steps[currentStep].content}</StyledContent>
       <Row type="flex" justify="end">
-        {currentStep > 0 && <Button onClick={prev}>Quay lại</Button>}
-        {currentStep < steps.length - 1 && (
+        {currentStep > 0 && currentStep < steps.length - 1 && (
+          <Button onClick={prev}>Quay lại</Button>
+        )}
+        {currentStep < steps.length - 2 && (
           <Button
+            form="orderForm"
+            htmlType="submit"
             style={{ marginLeft: 8 }}
             type="primary"
-            onClick={next}
+            onClick={currentStep !== 1 ? next : undefined}
             disabled={cart.length === 0}
           >
             Tiếp tục
           </Button>
         )}
-        {currentStep === steps.length - 1 && (
+        {currentStep === steps.length - 2 && (
           <Button
             type="primary"
             style={{ marginLeft: 8 }}
-            onClick={() => message.success("Processing complete!")}
+            onClick={handleSubmit}
           >
-            Hoàn thành
+            Xác nhận
           </Button>
         )}
       </Row>

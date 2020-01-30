@@ -15,23 +15,18 @@ import { index, modelOptions, plugin, pre, prop } from '@typegoose/typegoose';
 @InputType('UserInput')
 @ObjectType()
 @plugin(creatorPlugin)
-@index({
-  fullname: 'text',
-  username: 'text',
-  phone: 'text',
-  address: 'text',
-})
+@index({ fullname: 'text', phone: 'text', email: 'text' })
 @modelOptions({ schemaOptions: { collection: 'User' } })
 export class User extends BaseModel {
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public fullname: string;
 
-  @Field({ nullable: true, filter: true, sort: true })
+  @Field({ nullable: true })
   @prop()
   public dob?: Date;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true, unique: true })
   public username: string;
 
@@ -39,7 +34,7 @@ export class User extends BaseModel {
   @prop({ required: true })
   public password: string;
 
-  @Field({ nullable: true, filter: true, sort: true })
+  @Field({ nullable: true, sort: true })
   @prop()
   public phone?: string;
 
@@ -51,8 +46,8 @@ export class User extends BaseModel {
   @prop({ required: true })
   public profileId: string;
 
-  @Field({ nullable: true, filter: true, sort: true })
-  @prop({ default: true })
+  @Field({ filter: true, sort: true })
+  @prop({ required: true, default: true })
   public status?: boolean;
 
   @Field(() => ID, { nullable: true, filter: true, sort: true })

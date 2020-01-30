@@ -16,7 +16,7 @@ export class Product extends BaseModel {
   @prop({ required: true, unique: true })
   public sku: string;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public display: string;
 
@@ -32,19 +32,19 @@ export class Product extends BaseModel {
   @prop({ default: [] })
   public imageIds?: string[];
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public cost: number;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public price: number;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ default: 0 })
   public discount: number;
 
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop()
   public quantity: number;
 

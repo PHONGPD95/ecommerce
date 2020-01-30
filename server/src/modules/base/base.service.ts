@@ -1,7 +1,7 @@
+import { ClassType } from '~database/types';
+
 import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
-
-import { ClassType } from '~database/types';
 
 @Injectable()
 export class BaseService<TModel> {
@@ -31,34 +31,25 @@ export class BaseService<TModel> {
 
   public async create(record: TModel): Promise<TModel> {
     const r = await this.model.create(record);
-    if (!r) {
-      throw Error();
-    }
 
-    return r;
+    return r.toObject();
   }
 
   public async updateById(_id: string, record: TModel): Promise<TModel> {
     const r = await this.model.findById(_id);
-    if (!r) {
-      throw Error();
-    }
 
     Object.assign(r, record);
     await r.save();
 
-    return r;
+    return r.toObject();
   }
 
   public async removeById(_id: string): Promise<TModel> {
     const r = await this.model.findById(_id);
-    if (!r) {
-      throw Error();
-    }
 
     await r.remove();
     Object.assign(r, { _id });
 
-    return r;
+    return r.toObject();
   }
 }

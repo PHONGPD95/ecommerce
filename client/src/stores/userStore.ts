@@ -1,17 +1,11 @@
 import { get } from 'lodash';
 import { action, computed, observable } from 'mobx';
-
 import { ErrorNoti, SuccessNoti } from '~components/UI';
 import client from '~graphql/client';
 import { CHANGE_PASSWORD, UPDATE_INFO } from '~graphql/mutations';
 import { ME } from '~graphql/queries';
 import {
-  ChangePassword,
-  ChangePasswordVariables,
-  Me,
-  UpdateInfo,
-  UpdateInfoInput,
-  UpdateInfoVariables
+    ChangePassword, ChangePasswordVariables, Me, UpdateInfo, UpdateInfoInput, UpdateInfoVariables
 } from '~graphql/types';
 
 import authStore from './authStore';
@@ -44,12 +38,12 @@ class UserStore {
           authStore.logout();
         } else {
           this.currentUser = data;
+          this.loadingUser = false;
         }
       })
       .catch(_err => {
         authStore.logout();
       })
-      .finally(() => (this.loadingUser = false));
   };
 
   @action

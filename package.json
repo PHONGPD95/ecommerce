@@ -9,7 +9,7 @@
   "scripts": {
     "build-server": "cd server && yarn build",
     "dev-server": "cd server && yarn start:debug",
-    "gen-client": "cd client && yarn gen-types",
+    "gen-types": "cd client && yarn gen-types",
     "dev-client": "cd client && yarn start"
   },
   "dependencies": {},

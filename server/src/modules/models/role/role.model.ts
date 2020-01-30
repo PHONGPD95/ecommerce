@@ -8,7 +8,7 @@ import { index, modelOptions, prop } from '@typegoose/typegoose';
 @index({ description: 'text' })
 @modelOptions({ schemaOptions: { collection: 'Role' } })
 export class Role extends BaseModel {
-  @Field({ filter: true, sort: true })
+  @Field({ sort: true })
   @prop({ required: true })
   public roleId: string;
 

@@ -39,7 +39,7 @@ export class UserResolver extends BaseUserResolver {
     super();
     Container.set(UserResolver, this);
   }
-  
+
   @FieldResolver(() => Profile)
   public async profile(
     @Root() user: ReturnModelType<typeof User>,

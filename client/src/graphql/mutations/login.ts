@@ -5,7 +5,6 @@ export const LOGIN = gql`
     login(username: $username, password: $password) {
       authToken
       error {
-        title
         message
       }
     }

@@ -1,9 +1,10 @@
 import { Button } from 'antd';
 import { Formik } from 'formik';
 import { Form, FormItem, Input } from 'formik-antd';
+import { get } from 'lodash';
 import { observer } from 'mobx-react';
-import React, { FC, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router';
+import React, { FC } from 'react';
+import { Redirect, useLocation } from 'react-router';
 import styled from 'styled-components';
 import * as yup from 'yup';
 import { useStores } from '~stores';
@@ -43,22 +44,18 @@ const Login: FC = observer(() => {
     userStore: { currentUser }
   } = useStores();
 
-  const history = useHistory();
   const location = useLocation();
 
-  const { from } = location.state || { from: { pathname: "/admin" } };
+  const from = get(location, "state.from") || { pathname: "/admin" };
 
   const initialValues: FormValues = {
     username: "",
     password: ""
   };
 
-  useEffect(() => {
-    if (currentUser) {
-      history.replace(from);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser]);
+  if (currentUser) {
+    return <Redirect to={from.pathname} />;
+  }
 
   const handleSubmit = async (
     { username, password }: FormValues,

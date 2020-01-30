@@ -7,7 +7,6 @@ export const REMOVE_FILE_BY_ID = gql`
         id
       }
       error {
-        title
         message
       }
     }

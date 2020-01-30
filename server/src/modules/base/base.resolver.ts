@@ -1,30 +1,15 @@
 import { FieldsByTypeName, ResolveTree } from 'graphql-parse-resolve-info';
 import { pickBy, some } from 'lodash';
 import {
-  Arg,
-  Args,
-  ArgsType,
-  Authorized,
-  ClassType,
-  ID,
-  InputType,
-  Int,
-  ObjectType,
-  registerEnumType,
-  Resolver
+    Arg, Args, ArgsType, Authorized, ClassType, ID, InputType, Int, ObjectType, registerEnumType,
+    Resolver
 } from 'type-graphql';
 import { TypeValueThunk } from 'type-graphql/dist/decorators/types';
 import { FieldMetadata } from 'type-graphql/dist/metadata/definitions';
 import { getMetadataStorage } from 'type-graphql/dist/metadata/getMetadataStorage';
 import Container from 'typedi';
-
 import {
-  Field,
-  FieldInfo,
-  FILTER_METADATA_KEY,
-  Mutation,
-  Query,
-  SORT_METADATA_KEY
+    Field, FieldInfo, FILTER_METADATA_KEY, Mutation, Query, SORT_METADATA_KEY
 } from '~graphql/graphql-decorators';
 import { SortDirection } from '~graphql/types';
 
@@ -357,12 +342,12 @@ export function createBaseResolver<TModel extends BaseModel>(
       let data;
 
       try {
-        data = this.service.create(record as TModel);
+        data = await this.service.create(record as TModel);
       } catch (err) {
         return invalidMutation;
       }
 
-      return data;
+      return { data };
     }
 
     @Authorized(update.role)
@@ -376,12 +361,12 @@ export function createBaseResolver<TModel extends BaseModel>(
       let data;
 
       try {
-        data = this.service.updateById(_id, record as TModel);
+        data = await this.service.updateById(_id, record as TModel);
       } catch (err) {
         return invalidMutation;
       }
 
-      return data;
+      return { data };
     }
 
     @Authorized(remove.role)
@@ -393,12 +378,12 @@ export function createBaseResolver<TModel extends BaseModel>(
       let data;
 
       try {
-        data = this.service.removeById(_id);
+        data = await this.service.removeById(_id);
       } catch (err) {
         return invalidMutation;
       }
 
-      return data;
+      return { data };
     }
   }
 
