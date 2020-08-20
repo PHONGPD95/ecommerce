@@ -24,7 +24,7 @@
     "@nestjs/platform-express": "^6.7.2",
     "@typegoose/typegoose": "^6.1.2",
     "apollo-server-express": "^2.9.7",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "bluebird": "^3.7.1",
     "cls-hooked": "^4.2.2",
     "dataloader": "^1.4.0",
